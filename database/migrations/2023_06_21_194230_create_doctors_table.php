@@ -15,14 +15,16 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->string('gender');
-            $table->unsignedBigInteger('profession_id');
-            $table->unsignedBigInteger('subsidiary_id');
+            $table->unsignedBigInteger('profession_id')->nullable();
+            $table->unsignedBigInteger('subsidiary_id')->nullable();
+            $table->unsignedBigInteger('photo_id')->nullable();
 
             $table->integer('phone');
             $table->timestamps();
 
-            $table->foreign('profession_id')->references('id')->on('professions')->onDelete('cascade');
-            $table->foreign('subsidiary_id')->references('id')->on('subsidiaries')->onDelete('cascade');
+            $table->foreign('profession_id')->references('id')->on('professions')->onDelete('set null');
+            $table->foreign('subsidiary_id')->references('id')->on('subsidiaries')->onDelete('set null');
+            $table->foreign('photo_id')->references('id')->on('photos')->onDelete('set null');
         });
     }
 

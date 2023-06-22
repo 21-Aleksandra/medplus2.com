@@ -5,6 +5,7 @@ use App\Models\Profession;
 use App\Models\Comment;
 use App\Models\Appointment;
 use App\Models\Language;
+use App\Models\Photo;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -32,6 +33,11 @@ class Doctor extends Model
     public function languages()
     {
         return $this->belongsToMany(Language::class);
+    }
+
+    public function photo()
+    {
+        return $this->hasOne(Photo::class);
     }
 
 }

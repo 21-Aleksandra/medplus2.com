@@ -4,6 +4,7 @@ namespace App\Models;
 use App\Models\Subsidiary;
 use App\Models\Comment;
 use App\Models\Appointment;
+use App\Models\Photo;
 
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
@@ -61,5 +62,10 @@ class User extends Authenticatable
     public function appointments()
     {
         return $this->hasMany(Appointment::class);
+    }
+
+    public function photo()
+    {
+        return $this->hasOne(Photo::class);
     }
 }

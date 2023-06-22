@@ -14,16 +14,16 @@ return new class extends Migration
         Schema::create('subsidiaries', function (Blueprint $table) {
             $table->id();
             $table->string('naming');
-            $table->unsignedBigInteger('address_id');
-            $table->unsignedBigInteger('manager_id');
+            $table->unsignedBigInteger('address_id')->nullable();
+            $table->unsignedBigInteger('manager_id')->nullable();
             $table->string('email')->unique();
             $table->timestamps();
 
-            $table->foreign('address_id')->references('id')->on('addresses')->onDelete('cascade');
-            $table->foreign('manager_id')->references('id')->on('users')->onDelete('cascade');
+            $table->foreign('address_id')->references('id')->on('addresses')->onDelete('set null');
+            $table->foreign('manager_id')->references('id')->on('users')->onDelete('set null');
             
 
-            $table->timestamps();
+        
         });
     }
 
