@@ -18,8 +18,12 @@ return new class extends Migration
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->integer('role')->nullable();
+            $table->unsignedBigInteger('photo_id')->nullable();
             $table->rememberToken();
             $table->timestamps();
+
+            
+        $table->foreign('photo_id')->references('id')->on('photos')->onDelete('set null');
         });
     }
 

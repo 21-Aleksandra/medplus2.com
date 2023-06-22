@@ -11,7 +11,7 @@ class Subsidiary extends Model
 {
     use HasFactory;
 
-    protected $fillable= ['naming','address','manager_id','e-mail']; 
+    protected $fillable= ['naming','address','manager_id','email']; 
 
     public function user()
     {
