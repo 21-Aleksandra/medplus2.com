@@ -2,6 +2,8 @@
 
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\DoctorController;
+use App\Http\Controllers\CommentController;
 
 /*
 |--------------------------------------------------------------------------
@@ -17,6 +19,13 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('homepage');
 });
+
+Route::get('/doctors', [DoctorController::class, 'index']);
+Route::resource('doctor', DoctorController::class);
+
+Route::post('/doctors/{doctorname}/comments', [CommentController::class, 'store'])->name('comments.store');
+
+Route::get('/doctor/{doctorname}', [DoctorController::class, 'show'])->name('doctor.show');
 
 Route::get('/dashboard', function () {
     return view('dashboard');
