@@ -11,7 +11,10 @@
                 <div class="p-6 text-gray-900">
                     {{ __("You're logged in!") }}
                     <br>
-                    <a href="{{ url('/doctors') }}">View Doctors</a>
+                    <a href="{{ url('/doctors') }}">View Doctors</a><br>
+                    <a href="{{  url('/comments')}}">View Comments</a><br>
+                    <a href="{{  url('/users')}}">View Users</a><br>
+                    <a href="{{ url('/appointments')}}">Appointments</a>
                 </div>
             </div>
         </div>

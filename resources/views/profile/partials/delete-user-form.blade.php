@@ -52,4 +52,7 @@
             </div>
         </form>
     </x-modal>
+    <div class="text-center">
+    <a href="{{ route('appointments.create') }}" class="btn btn-primary">Create Appointment</a>
+</div>
 </section>

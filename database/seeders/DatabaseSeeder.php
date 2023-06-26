@@ -57,6 +57,22 @@ class DatabaseSeeder extends Seeder
             ]);
         }
 
+        for ($i = 0; $i < 3; $i++) {
+            User::insert([
+                'name' => $faker->name,
+                'email' => $faker->email,
+                'password' => Hash::make('password'), // all users have the same password for test
+                'role' => 0,
+            ]);
+        }
+
+        User::insert([
+            'name' => 'admin',
+            'email' =>'admin@gmail.com',
+            'password' => Hash::make('password'), // all users have the same password for test
+            'role' => 2,   
+        ]);
+
         $addressId1 = Address::where('city', 'Riga')->where('street', 'Abolu street 4')->value('id');
         $addressId2 = Address::where('city', 'Ventspils')->where('street', 'Ulmana street 88')->value('id');
         $addressId3 = Address::where('city', 'Kekava')->where('street', 'Rudens street 23')->value('id');
@@ -112,7 +128,7 @@ class DatabaseSeeder extends Seeder
             'gender' => 'Male',
             'profession_id' => $Cardiologists,
             'subsidiary_id' => $subsidiaryId1,
-            'phone' => 123456789,
+            'phone' => 12345678,
         ]);
 
         Doctor::create([
@@ -120,7 +136,7 @@ class DatabaseSeeder extends Seeder
             'gender' => 'Female',
             'profession_id' => $Gastroenterologists,
             'subsidiary_id' => $subsidiaryId2,
-            'phone' => 987654321,
+            'phone' => 98765432,
         ]);
 
         Doctor::create([
@@ -128,7 +144,7 @@ class DatabaseSeeder extends Seeder
             'gender' => 'Male',
             'profession_id' => $Ophthalmologists,
             'subsidiary_id' => $subsidiaryId3,
-            'phone' => 456789123,
+            'phone' => 45678912,
         ]);
 
         Doctor::create([
@@ -136,7 +152,7 @@ class DatabaseSeeder extends Seeder
             'gender' => 'Male',
             'profession_id' => $Endocrinologists,
             'subsidiary_id' => $subsidiaryId3,
-            'phone' => 456789123,
+            'phone' => 45678912,
         ]);
         
         Doctor::create([
@@ -144,7 +160,7 @@ class DatabaseSeeder extends Seeder
             'gender' => 'Female',
             'profession_id' => $Gastroenterologists,
             'subsidiary_id' => $subsidiaryId4,
-            'phone' => 654321987,
+            'phone' => 65432198,
         ]);
         
         Doctor::create([
@@ -152,7 +168,7 @@ class DatabaseSeeder extends Seeder
             'gender' => 'Male',
             'profession_id' => $Neurologists,
             'subsidiary_id' => $subsidiaryId1,
-            'phone' => 987123456,
+            'phone' => 98712345,
         ]);
         
         Doctor::create([
@@ -160,7 +176,7 @@ class DatabaseSeeder extends Seeder
             'gender' => 'Female',
             'profession_id' => $Pediatricians,
             'subsidiary_id' => $subsidiaryId2,
-            'phone' => 321654987,
+            'phone' => 32165498,
         ]);
 
         Doctor::create([
@@ -168,7 +184,7 @@ class DatabaseSeeder extends Seeder
             'gender' => 'Male',
             'profession_id' => $Oncologists,
             'subsidiary_id' => $subsidiaryId3,
-            'phone' => 987654321,
+            'phone' => 98765432,
         ]);
         
         Doctor::create([
@@ -176,7 +192,7 @@ class DatabaseSeeder extends Seeder
             'gender' => 'Female',
             'profession_id' => $Ophthalmologists,
             'subsidiary_id' => $subsidiaryId4,
-            'phone' => 456789123,
+            'phone' => 45678912,
         ]);
         
         Doctor::create([
@@ -184,7 +200,7 @@ class DatabaseSeeder extends Seeder
             'gender' => 'Male',
             'profession_id' => $Cardiologists,
             'subsidiary_id' => $subsidiaryId1,
-            'phone' => 654321987,
+            'phone' => 65432198,
         ]);
         
         Doctor::create([
@@ -192,7 +208,7 @@ class DatabaseSeeder extends Seeder
             'gender' => 'Female',
             'profession_id' => $Dermatologists,
             'subsidiary_id' => $subsidiaryId2,
-            'phone' => 987123456,
+            'phone' => 98712345,
         ]);
 
         $users = User::pluck('id');
@@ -213,7 +229,7 @@ class DatabaseSeeder extends Seeder
                 'doctor_id' => $doctors->random(),
                 'date' => now()->addDays($i),
                 'time' => '10:00',
-                'status' => null,
+                'status' => 'waiting',
             ]);
         }
 

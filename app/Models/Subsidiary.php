@@ -3,6 +3,7 @@
 namespace App\Models;
 use App\Models\User;
 use App\Models\Address;
+use App\Models\Doctor;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -21,5 +22,10 @@ class Subsidiary extends Model
     public function address()
     {
         return $this->hasOne(Address::class);
+    }
+
+    public function doctors()
+    {
+        return $this->hasMany(Doctor::class);
     }
 }

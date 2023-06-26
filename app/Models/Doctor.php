@@ -6,6 +6,8 @@ use App\Models\Comment;
 use App\Models\Appointment;
 use App\Models\Language;
 use App\Models\Photo;
+use App\Models\Subsidiary;
+
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -38,6 +40,11 @@ class Doctor extends Model
     public function photo()
     {
         return $this->hasOne(Photo::class);
+    }
+
+    public function subsidiary()
+    {
+        return $this->belongsTo(Subsidiary::class);
     }
 
 }

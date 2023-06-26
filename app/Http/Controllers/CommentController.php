@@ -14,7 +14,10 @@ class CommentController extends Controller
      */
     public function index()
     {
-        //
+        $comments = Comment::with('user', 'doctor')->get();
+        $doctors=Doctor::all();
+
+        return view('showcom', compact('comments','doctors'));
     }
 
     /**
@@ -33,7 +36,7 @@ class CommentController extends Controller
 
   
         $request->validate([
-            'text' => 'required|string',
+            'text' => 'required|string|max:400',
         ]);
 
         // Find the doctor by name
@@ -43,14 +46,12 @@ class CommentController extends Controller
             abort(404); // Doctor not found
         }
 
-        // Create a new comment and associate it with the doctor
+   
         $comment = new Comment();
         $comment->text = $request->input('text');
         $comment->doctor_id = $doctor->id;
         $comment->user_id = Auth::id();
-        // Add any other relevant fields to the comment
-
-        // Save the comment
+  
         $comment->save();
     
 
@@ -89,8 +90,19 @@ class CommentController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function delete(Request $request)
     {
-        //
+        $selectedComments = $request->input('selected_comments');
+    
+        // Check if any comments were selected
+        if ($selectedComments && is_array($selectedComments)) {
+            // Delete the selected comments
+            Comment::whereIn('id', $selectedComments)->delete();
+    
+            // Add any additional logic you need after deleting the comments
+        }
+    
+        // Redirect back to the comments list page
+        return redirect('/comments');
     }
 }

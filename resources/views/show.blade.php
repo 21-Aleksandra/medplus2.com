@@ -7,7 +7,7 @@
 </head>
 <body>
     <h1>Doctor Details</h1>
-
+    
     <div>
         @if ($doctor)
             <h2>{{ $doctor->name }}</h2>
@@ -32,19 +32,48 @@
             @endforeach
 
             <h3>Leave a Comment</h3>
+            @if ($errors->any())
+                <div class="alert alert-danger">
+                    <ul>
+                        @foreach ($errors->all() as $error)
+                            <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                </div>
+            @endif
+
             <form method="POST" action="{{ route('comments.store', ['doctorname' => $doctor->name]) }}">
                 @csrf
-                <textarea name="text" rows="4" cols="50" placeholder="Enter your comment" ></textarea>
+                <textarea name="text" id="commentText" rows="4" cols="50" placeholder="Enter your comment(max = 400 symbols)"></textarea>
                 <br>
-                <button type="submit"  onclick="return confirm('Are you sure you want to save this comment?')">Save</button>
+                <button type="submit" onclick="return confirm('Are you sure you want to save this comment?')">Save</button>
             </form>
+
+            <div id="characterCountMessage" style="display: none;">
+                <p> You have entered more than 400!!!</p>
+            </div>
+
+            <script>
+                var inputElement = document.getElementById('commentText');
+                var characterCountMessage = document.getElementById('characterCountMessage');
+
+                inputElement.addEventListener('input', function() {
+                    var inputText = inputElement.value;
+                    var count = inputText.length;
+
+                    if (count > 400) {
+                        characterCountMessage.style.display = 'block';
+                    } else {
+                        characterCountMessage.style.display = 'none';
+                    }
+                });
+            </script>
 
         @else
             <p>Doctor not found.</p>
         @endif
-
-        
     </div>
+
     <a href="{{ url('/doctors') }}">Go to doctor list</a>
 </body>
 </html>
