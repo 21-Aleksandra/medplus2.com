@@ -6,7 +6,7 @@
 </head>
 
 <body>
-    <h1>Make Appointment</h1>
+    <h1>Make Appointment here</h1>
 
     @if ($errors->any())
         <div class="alert alert-danger">
