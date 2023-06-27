@@ -36,7 +36,7 @@
                             <td>{{ $appointment->doctor->name }}</td>
                             <td>{{ $appointment->status }}</td>
                             <td>
-                                @if ($appointment->status === 'waiting')
+                                @if ($appointment->status !=='declined')
                                    <form action="{{ route('appointments.update', $appointment->id) }}" method="POST">
     @csrf
     @method('PATCH')

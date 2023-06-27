@@ -224,8 +224,10 @@ class DatabaseSeeder extends Seeder
 
 
         for ($i = 0; $i < 7; $i++) {
+            $userId = mt_rand(4, 6);
             Appointment::create([
-                'user_id' => $users->random(),
+                
+                'user_id' => $userId,
                 'doctor_id' => $doctors->random(),
                 'date' => now()->addDays($i),
                 'time' => '10:00',

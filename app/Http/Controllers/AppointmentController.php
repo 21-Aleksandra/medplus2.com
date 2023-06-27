@@ -4,6 +4,9 @@ use App\Models\Doctor;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use App\Models\Appointment;
+use App\Mail\ChangeMail;
+use App\Mail\ManagerMail;
+use Illuminate\Support\Facades\Mail;
 
 class AppointmentController extends Controller
 {
@@ -83,22 +86,22 @@ public function index()
      * Update the specified resource in storage.
      */
     public function update(Appointment $appointment, Request $request)
-{
-    $action = $request->input('action');
-
-    if ($action === 'accept') {
-        $appointment->status = 'accepted';
-    } elseif ($action === 'decline') {
-        $appointment->status = 'declined';
+    {
+        $action = $request->input('action');
+    
+        if ($action === 'accept') {
+            $appointment->status = 'accepted';
+        } elseif ($action === 'decline') {
+            $appointment->status = 'declined';
+    
+            // Send email to user with role 1 (manager)
+            Mail::to($appointment->user->email)->send(new ManagerMail($appointment));
+        }
+    
+        $appointment->save();
+    
+        return redirect()->route('appointments.index')->with('success', 'Appointment status updated successfully.');
     }
-
-    $appointment->save();
-
-    // Send email to user with role 0
-    // Send email to user with role 1
-
-    return redirect()->route('appointments.index')->with('success', 'Appointment status updated successfully.');
-}
 
 public function updateStatus(Request $request)
 {
@@ -112,6 +115,12 @@ public function updateStatus(Request $request)
     }
 
     // Send emails to users
+    $appointments = Appointment::whereIn('id', $selectedAppointments)->get();
+    foreach ($appointments as $appointment) {
+        $user = $appointment->user;
+        Mail::to($user->email)->send(new ChangeMail($appointment));
+    }
+  
 
     return redirect()->route('appointments.index')->with('success', 'Selected appointments status updated successfully.');
 }
