@@ -11,10 +11,20 @@
                 <div class="p-6 text-gray-900">
                     {{ __("You're logged in!") }}
                     <br>
+
                     <a href="{{ url('/doctors') }}">View Doctors</a><br>
+
+                    @canany([ 'is_user', 'is_manager'])
+                    <a href="{{ url('/appointments')}}">Appointments</a>
+                    @endcanany
+
+                    @can('is_admin')
                     <a href="{{  url('/comments')}}">View Comments</a><br>
                     <a href="{{  url('/users')}}">View Users</a><br>
-                    <a href="{{ url('/appointments')}}">Appointments</a>
+                    @endcan
+
+                 
+                    
                 </div>
             </div>
         </div>

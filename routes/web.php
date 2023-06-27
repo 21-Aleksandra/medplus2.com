@@ -18,13 +18,16 @@ use App\Http\Controllers\AppointmentController;
 |
 */
 
+
 Route::get('/', function () {
     return view('homepage');
 });
 
+
+Route::group(['middleware' => 'role.restriction'], function () {
 Route::get('/doctors', [DoctorController::class, 'index']);
 Route::resource('doctor', DoctorController::class);
-
+Route::post('/doctors/search', [DoctorController::class, 'index'])->name('doctor.search');
 Route::post('/doctors/{doctorname}/comments', [CommentController::class, 'store'])->name('comments.store');
 Route::post('/doctors/search', [DoctorController::class, 'index'])->name('doctor.search');
 Route::delete('/doctors/delete', [DoctorController::class, 'delete'])->name('doctors.delete');
@@ -33,7 +36,7 @@ Route::get('/doctor/{doctorname}', [DoctorController::class, 'show'])->name('doc
 
 
 Route::get('/doctors/{doctorname}/edit', [DoctorController::class, 'edit'])->name('editdoc.edit');
-Route::put('/doctors/{id}', [DoctorController::class, 'update'])->name('editdoc.update');
+Route::put('/doctors/{doctorname}', [DoctorController::class, 'update'])->name('doctors.update');
 Route::get('/doctors/create', [DoctorController::class, 'create'])->name('doctors.create');
 Route::post('/doctors', [DoctorController::class, 'store'])->name('doctors.store');
 
@@ -73,3 +76,4 @@ Route::middleware(['auth'])->group(function () {
 Route::get('/appointments', [AppointmentController::class, 'index'])->name('appointments.index');
 
 require __DIR__.'/auth.php';
+});

@@ -8,7 +8,7 @@
 <body>
     <h1>Edit Doctor :  {{ $doctor->name }}</h1>
 
-    <form method="POST" action="{{ route('editdoc.update', $doctor->id) }}">
+    <form method="POST" action="{{ route('doctors.update', $doctor->id) }}">
     @csrf
     @method('PUT')
 
@@ -39,8 +39,8 @@
 
     <!-- Edit profession field -->
     <div>
-        <label for="profession">Profession:</label>
-        <select id="profession" name="profession_id">
+        <label for="profession_id">Profession:</label>
+        <select id="profession_id" name="profession_id">
             <option value="">Select Profession</option>
             @foreach ($professions as $profession)
                 <option value="{{ $profession->id }}" {{ old('profession_id', $doctor->profession_id) == $profession->id ? 'selected' : '' }}>
@@ -62,6 +62,7 @@
             @endforeach
         </select>
     </div>
+
 
     <!-- Edit phone number field -->
     <div>
@@ -85,5 +86,7 @@
     <button type="submit">Save</button>
 </form>
 <a href="{{ url('/doctors') }}">Go back to doctors</a>
+
+
 </body>
 </html>

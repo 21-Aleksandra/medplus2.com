@@ -3,14 +3,18 @@
 namespace App\Http\Controllers;
 use App\Models\User;
 use Illuminate\Http\Request;
-
+use Illuminate\Support\Facades\Gate;
 class UserController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
     public function index()
+
     {
+        if(Gate::denies('is_admin')){
+            abort(403);
+        }
         $users = User::where('role', '!=', 2)->get();
     
         return view('users', compact('users'));
@@ -20,6 +24,9 @@ class UserController extends Controller
      */
     public function create()
     {
+        if(Gate::denies('is_admin')){
+            abort(403);
+        }
         return view('adduser');
     }
 
@@ -28,6 +35,9 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
+        if(Gate::denies('is_admin')){
+            abort(403);
+        }
         // Validate the form data
         $validatedData = $request->validate([
             'name' => 'required|string',
@@ -59,7 +69,13 @@ class UserController extends Controller
      * Show the form for editing the specified resource.
      */
     public function edit($user)
-    {$user = User::findOrFail($user);
+    
+    {
+        if(Gate::denies('is_admin')){
+            abort(403);
+        }
+        
+        $user = User::findOrFail($user);
         return view('edituser', compact('user'));
     }
 
@@ -68,6 +84,10 @@ class UserController extends Controller
      */
     public function update(Request $request, User $user)
     {
+
+        if(Gate::denies('is_admin')){
+            abort(403);
+        }
         $request->validate([
             'name' => 'required|string|max:255',
             'email' => 'required|email|unique:users,email,' . $user->id,
@@ -97,6 +117,9 @@ class UserController extends Controller
     }
     public function actions(Request $request)
     {
+        if(Gate::denies('is_admin')){
+            abort(403);
+        }
         $action = $request->input('action');
         $userIds = $request->input('users', []);
 

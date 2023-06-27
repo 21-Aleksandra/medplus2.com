@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Models\Doctor;
 use App\Models\Comment;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Gate;
 
 class CommentController extends Controller
 {
@@ -14,6 +15,9 @@ class CommentController extends Controller
      */
     public function index()
     {
+        if(Gate::denies('is_admin')){
+            abort(403);
+        }
         $comments = Comment::with('user', 'doctor')->get();
         $doctors=Doctor::all();
 
@@ -35,6 +39,10 @@ class CommentController extends Controller
     {
 
   
+        if(Gate::denies('is_user')){
+            abort(403);
+        }
+
         $request->validate([
             'text' => 'required|string|max:400',
         ]);
@@ -92,6 +100,10 @@ class CommentController extends Controller
      */
     public function delete(Request $request)
     {
+
+        if(Gate::denies('is_admin')){
+            abort(403);
+        }
         $selectedComments = $request->input('selected_comments');
     
         // Check if any comments were selected

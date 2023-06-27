@@ -7,7 +7,7 @@ use App\Models\Appointment;
 use App\Mail\ChangeMail;
 use App\Mail\ManagerMail;
 use Illuminate\Support\Facades\Mail;
-
+use Illuminate\Support\Facades\Gate;
 class AppointmentController extends Controller
 {
     /**
@@ -15,6 +15,9 @@ class AppointmentController extends Controller
      */
 public function index()
 {
+    if(Gate::allows('is_admin')){
+        abort(403);
+    }
     $userRole = Auth::user()->role;
     $userAppointments = [];
     $managerAppointments = [];
@@ -38,9 +41,16 @@ public function index()
      */
     public function create()
     {
+        if(Gate::allows('is_user')){
+        
+       
         $doctors = Doctor::all();
         
-        return view('makeappointment', compact('doctors'));
+        return view('makeappointment', compact('doctors'));}
+
+        else{
+            abort(403);
+        }
     }
 
     /**
@@ -48,6 +58,9 @@ public function index()
      */
     public function store(Request $request)
     {
+        if(Gate::allows('is_admin')){
+            abort(403);}
+
         $request->validate([
             'doctor_id' => 'required|exists:doctors,id',
             'date' => 'required|date',
@@ -87,6 +100,8 @@ public function index()
      */
     public function update(Appointment $appointment, Request $request)
     {
+        if(Gate::allows('is_user')){
+
         $action = $request->input('action');
     
         if ($action === 'accept') {
@@ -102,9 +117,16 @@ public function index()
     
         return redirect()->route('appointments.index')->with('success', 'Appointment status updated successfully.');
     }
+        else{
+            abort(403);
+        }
+
+    }
 
 public function updateStatus(Request $request)
+
 {
+    if(Gate::allows('is_manager')){
     $selectedAppointments = $request->input('selectedAppointments');
     $action = $request->input('action');
 
@@ -123,6 +145,10 @@ public function updateStatus(Request $request)
   
 
     return redirect()->route('appointments.index')->with('success', 'Selected appointments status updated successfully.');
+}
+else{
+    abort(403);
+}
 }
 
     /**

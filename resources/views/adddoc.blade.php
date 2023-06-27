@@ -23,7 +23,7 @@
         <!-- Name field -->
         <div>
             <label for="name">Name:</label>
-            <input type="text" id="name" name="name" value="{{ old('name') }}" placeholder="Enter name" >
+            <input type="text" id="name" name="name" value="{{ old('name') }}" placeholder="Enter name">
         </div>
 
         <!-- Gender field -->
@@ -37,34 +37,36 @@
 
         <!-- Profession field -->
         <div>
-            <label for="profession">Profession:</label>
-            <select id="profession" name="profession_id">
-                <option value="">Select Profession</option>
-                @foreach ($professions as $profession)
-                    <option value="{{ $profession->id }}" {{ old('profession_id') == $profession->id ? 'selected' : '' }}>
-                        {{ $profession->name }}
-                    </option>
-                @endforeach
-            </select>
-        </div>
+    <label for="profession_id">Profession:</label>
+    <select id="profession_id" name="profession_id"> <!-- Updated name attribute to profession_id -->
+        <option value="">Select Profession</option>
+        @foreach ($professions as $profession)
+            <option value="{{ $profession->id }}" {{ old('profession_id') == $profession->id ? 'selected' : '' }}>
+                {{ $profession->name }}
+            </option>
+        @endforeach
+    </select>
+</div>
 
         <!-- Subsidiary field -->
         <div>
-            <label for="subsidiary">Subsidiary:</label>
-            <select id="subsidiary" name="subsidiary_id">
-                <option value="">Select Subsidiary</option>
-                @foreach ($subsidiaries as $subsidiary)
-                    <option value="{{ $subsidiary->id }}" {{ old('subsidiary_id') == $subsidiary->id ? 'selected' : '' }}>
-                        {{ $subsidiary->naming }}
-                    </option>
-                @endforeach
-            </select>
-        </div>
+    <label for="subsidiary_id">Subsidiary:</label>
+    <select id="subsidiary_id" name="subsidiary_id">
+        <option value="">Select Subsidiary</option>
+        @foreach ($subsidiaries as $subsidiary)
+            @if ($subsidiary->manager_id == auth()->id())
+                <option value="{{ $subsidiary->id }}" {{ old('subsidiary_id') == $subsidiary->id ? 'selected' : '' }}>
+                    {{ $subsidiary->naming }}
+                </option>
+            @endif
+        @endforeach
+    </select>
+</div>
 
         <!-- Phone number field -->
         <div>
             <label for="phone">Phone Number:</label>
-            <input type="text" id="phone" name="phone" value="{{ old('phone') }}" placeholder="Enter phone number" >
+            <input type="text" id="phone" name="phone" value="{{ old('phone') }}" placeholder="Enter phone number">
         </div>
 
         <!-- Languages field -->
@@ -77,8 +79,6 @@
                 </div>
             @endforeach
         </div>
-
-        <!-- Add other form fields for creating a new doctor -->
 
         <button type="submit">Save</button>
     </form>

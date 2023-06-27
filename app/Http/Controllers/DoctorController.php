@@ -7,6 +7,7 @@ use App\Models\Profession;
 use App\Models\Language;
 use App\Models\Subsidiary;
 use Illuminate\Validation\Rule;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Validator;
 
 class DoctorController extends Controller
@@ -56,6 +57,9 @@ class DoctorController extends Controller
      */
     public function create()
     {
+        if(Gate::denies('is_manager')){
+            abort(403);
+        }
         $professions = Profession::all();
         $subsidiaries = Subsidiary::all();
         $languages = Language::all();
@@ -67,27 +71,32 @@ class DoctorController extends Controller
      */
     public function store(Request $request)
     {
+        if(Gate::denies('is_manager')){
+            abort(403);
+        }
         $rules = [
-            'name' => 'required|string|max:255|unique:doctors,name',
+            'name' => 'required|string|max:255',
             'gender' => 'required|in:Male,Female',
             'profession_id' => 'required|exists:professions,id',
             'subsidiary_id' => 'required|exists:subsidiaries,id',
-            'phone' => 'required|numeric|digits:8|min:1000000',
+            'phone' => 'required|numeric|digits:8',
             'languages' => 'required|array|exists:languages,id',
-            // Add validation rules for other fields
         ];
     
         $request->validate($rules);
     
-        $doctor = new Doctor($request->all());
+        $doctor = new Doctor;
+        $doctor->name = $request->input('name');
+        $doctor->gender = $request->input('gender');
+        $doctor->profession_id = $request->input('profession_id');
+        $doctor->subsidiary_id = $request->input('subsidiary_id');
+        $doctor->phone = $request->input('phone');
     
         $doctor->save();
     
-        $doctor->languages()->sync($request->input('languages'));
-    
+        $doctor->languages()->attach($request->input('languages'), ['created_at' => now(), 'updated_at' => now()]);
         return redirect('/doctors')->with('success', 'Doctor created successfully');
     }
-
     /**
      * Display the specified resource.
      */
@@ -112,6 +121,11 @@ class DoctorController extends Controller
      */
     public function edit(string $doctorname)
     {
+        if(Gate::denies('is_manager')){
+            abort(403);
+        }
+
+      
      
             $doctor = Doctor::where('name', urldecode($doctorname))->first();
         
@@ -132,38 +146,42 @@ class DoctorController extends Controller
      */
 
      public function update(Request $request, $id)
-{
-    $rules = [
-        'name' => [
-            'required',
-            'string',
-            'max:255',
-          
-        ],
-        'gender' => 'required|in:Male,Female',
-        'profession_id' => 'required|exists:professions,id',
-        'subsidiary_id' => 'required|exists:subsidiaries,id',
-        'phone' => 'required|numeric|digits:8|min:1000000',
-        'languages' => 'required|array|exists:languages,id',
-        // Add validation rules for other fields
-    ];
+     {
+        if(Gate::denies('is_manager')){
+            abort(403);
+        }
+         $rules = [
+             'name' => 'required|string|max:255',
+             'gender' => 'required|in:Male,Female',
+             'profession_id' => 'required|exists:professions,id',
+             'subsidiary_id' => 'required|exists:subsidiaries,id',
+             'phone' => 'required|numeric|digits:8',
+             'languages' => 'required|array|exists:languages,id',
+         ];
+     
+         $request->validate($rules);
+     
+         $doctor = Doctor::findOrFail($id);
+         $doctor->name = $request->input('name');
+         $doctor->gender = $request->input('gender');
+         $doctor->profession_id = $request->input('profession_id');
+         $doctor->subsidiary_id = $request->input('subsidiary_id');
+         $doctor->phone = $request->input('phone');
+     
+         $doctor->languages()->sync($request->input('languages'));
+     
+         $doctor->save();
+     
+         return redirect('/doctors')->with('success', 'Doctor updated successfully');
+     }
 
-    $request->validate($rules);
-
-    $doctor = Doctor::findOrFail($id);
-
-    $doctor->fill($request->all());
-
-    $doctor->save();
-
-    $doctor->languages()->sync($request->input('languages'));
-
-    return redirect('/doctors')->with('success', 'Doctor updated successfully');
-}
 
     
     public function delete(Request $request)
     {
+        if(Gate::denies('is_manager')){
+            abort(403);
+;        }
         $selectedDoctors = $request->input('selected_doctors');
     
         // Check if any doctors were selected

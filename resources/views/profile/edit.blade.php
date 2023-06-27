@@ -25,7 +25,9 @@
                 </div>
             </div>
             <div class="text-center">
+    @can('is_user')
     <a href="{{ route('appointments.create') }}" class="btn btn-primary">Create Appointment</a>
+    @endcan
 </div>
         </div>
     </div>

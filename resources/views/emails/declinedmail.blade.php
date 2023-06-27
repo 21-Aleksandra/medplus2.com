@@ -5,8 +5,9 @@
 </head>
 <body>
     <h2>Appointment Declined</h2>
-    <p>changed for user: {{ $userName }},</p>
-    <p>We want to inform you that appointment with Dr. {{ $doctorName }} scheduled for {{ $appointmentDate }} at {{ $appointmentTime }} has been declined.</p>
+    <p>User: {{ $userName }},</p>
+    <p>To: Dr. {{ $doctorName }} </p>
+    <p>Scheduled for {{ $appointmentDate }} at {{ $appointmentTime }} </p></p>
     <p>Appointment Status: {{ $appointmentStatus }}</p>
 </body>
 </html>

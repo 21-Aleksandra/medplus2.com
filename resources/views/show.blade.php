@@ -9,6 +9,9 @@
     <h1>Doctor Details</h1>
     
     <div>
+ 
+
+
         @if ($doctor)
             <h2>{{ $doctor->name }}</h2>
             <p>Gender: {{ $doctor->gender }}</p>
@@ -24,13 +27,7 @@
                 @endforelse
             </ul>
 
-            <h3>Comments</h3>
-            @foreach ($comments as $comment)
-                <p>Author: {{ $comment->user->name }}</p>
-                <p>{{ $comment->text }}</p>
-                <hr>
-            @endforeach
-
+            @can('is_user')
             <h3>Leave a Comment</h3>
             @if ($errors->any())
                 <div class="alert alert-danger">
@@ -42,16 +39,27 @@
                 </div>
             @endif
 
+           
             <form method="POST" action="{{ route('comments.store', ['doctorname' => $doctor->name]) }}">
                 @csrf
                 <textarea name="text" id="commentText" rows="4" cols="50" placeholder="Enter your comment(max = 400 symbols)"></textarea>
                 <br>
                 <button type="submit" onclick="return confirm('Are you sure you want to save this comment?')">Save</button>
             </form>
+            @endcan
 
             <div id="characterCountMessage" style="display: none;">
                 <p> You have entered more than 400!!!</p>
             </div>
+
+            <h3>Comments</h3>
+            @foreach ($comments as $comment)
+                <p>Author: {{ $comment->user->name }}</p>
+                <p>{{ $comment->text }}</p>
+                <hr>
+            @endforeach
+
+           
 
             <script>
                 var inputElement = document.getElementById('commentText');

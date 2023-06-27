@@ -9,45 +9,77 @@
 <body>
 
 
+
 <form id="deleteForm" method="POST" action="{{ route('doctors.delete') }}">
     @csrf
     @method('DELETE')
-
     <div>
-        <button type="button" onclick="editSelected()">Edit Selected</button>
+    @can('is_manager')
+   
+       
         <button type="button" onclick="confirmDelete()">Delete Selected</button>
         <a href="{{ route('doctors.create') }}" class="btn btn-primary">Add Doctor</a>
-    </div>
+  
 
+
+ 
+
+        <button type="button" onclick="editSelected()">Edit Selected</button>
+   
+
+    </div>
+    @endcan
     @if ($doctors->isEmpty())
     <div>No doctors found.</div>
     @endif
 
     @foreach($doctors as $doctor)
-    
-    <div>
-        <input type="checkbox" name="selected_doctors[]" value="{{ $doctor->id }}">
-    @php
-    $encodedName = urlencode($doctor->name);
-    @endphp
-        <span><a href="{{ route('doctor.show', $encodedName) }}">{{ $doctor->name }}</a></span>
-        <span>{{ $doctor->profession->name }}</span>
-        <span>
-    @forelse ($doctor->languages as $key => $language)
-        {{ $language->code }}
-        @if (!$loop->last)
-        ,
-        @endif
-    @empty
-        No languages found.
-    @endforelse
-</span>
-    </div>
-    @endforeach
+    @if (!auth()->guest() && auth()->user()->can('is_manager') && $doctor->subsidiary && auth()->user()->id === $doctor->subsidiary->manager_id)
+        {{-- Show only doctors from manager's subsidiary for manager role --}}
+        <div>
+            <input type="checkbox" name="selected_doctors[]" value="{{ $doctor->id }}">
+            @php
+                $encodedName = urlencode($doctor->name);
+            @endphp
+            <span><a href="{{ route('doctor.show', $encodedName) }}">{{ $doctor->name }}</a></span>
+            <span>{{ $doctor->profession->name }}</span>
+            <span>
+                @forelse ($doctor->languages as $key => $language)
+                    {{ $language->code }}
+                    @if (!$loop->last)
+                        ,
+                    @endif
+                @empty
+                    No languages found.
+                @endforelse
+            </span>
+        </div>
+    @elseif (auth()->guest() || (auth()->user()->can('is_admin') || auth()->user()->can('is_user')))
+        <div>
+            @can('is_manager')
+            <input type="checkbox" name="selected_doctors[]" value="{{ $doctor->id }}">
+            @endcan
+            @php
+                $encodedName = urlencode($doctor->name);
+            @endphp
+            <span><a href="{{ route('doctor.show', $encodedName) }}">{{ $doctor->name }}</a></span>
+            <span>{{ $doctor->profession->name }}</span>
+            <span>
+                @forelse ($doctor->languages as $key => $language)
+                    {{ $language->code }}
+                    @if (!$loop->last)
+                        ,
+                    @endif
+                @empty
+                    No languages found.
+                @endforelse
+            </span>
+        </div>
+    @endif
+@endforeach
 
     <button type="submit" style="display: none;">Delete</button>
 </form>
-
 <script>
    
 
@@ -87,12 +119,17 @@ function confirmDelete() {
 }
 </script>
 
-
+@canany(['is_admin', 'is_user', 'is_manager'])
+<br>
 <a href="{{ url('/dashboard') }}">Go to Homepage aka Dash</a>
-<br>
+
+@endcanany 
 
 <br>
+@guest
+
 <a href="{{ url('/') }}">Go to Main Page aka Guest</a>
+@endguest
 
 
 
@@ -122,10 +159,18 @@ function confirmDelete() {
         <select id="subsidiary" name="subsidiary">
             <option value="">All Subsidiaries</option>
             @foreach ($subsidiaries as $subsidiary)
-                <option value="{{ $subsidiary->id }}" {{ request('subsidiary') == $subsidiary->id ? 'selected' : '' }}>
-                    {{ $subsidiary->naming }}
-                </option>
-            @endforeach
+    @can('is_manager')
+        @if ($subsidiary->manager_id == Auth::user()->id)
+            <option value="{{ $subsidiary->id }}" {{ request('subsidiary') == $subsidiary->id ? 'selected' : '' }}>
+                {{ $subsidiary->naming }}
+            </option>
+        @endif
+    @else
+        <option value="{{ $subsidiary->id }}" {{ request('subsidiary') == $subsidiary->id ? 'selected' : '' }}>
+            {{ $subsidiary->naming }}
+        </option>
+    @endcan
+@endforeach
         </select>
     </div>
 
