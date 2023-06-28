@@ -1,0 +1,26 @@
+<?php
+
+return [
+    'makeappointment' => 'make appointment here',
+    'title' => 'make appointment here!',
+    'error' => 'Errors:',
+    'date' => 'Date:',
+    'time' => 'Time:',
+    'selectdoctor' => 'Select a doctor',
+    'create' => 'Create Appointment',
+    'success' => 'Success:',
+    'table.date' => 'Date',
+    'table.time' => 'Time',
+    'table.doctor' => 'Doctor',
+    'table.status' => 'Status',
+    'table.action' => 'Action',
+    'table.select' => 'Select',
+    'noappointments' => 'No appointments found.',
+    'decline.confirmation' => 'Are you sure you want to decline your visit to :doctor?',
+    'decline' => 'Decline',
+    'declineall.confirmation' => 'Are you sure you want to decline all selected visits?',
+    'acceptall.confirmation' => 'Are you sure you want to accept all selected visits?',
+    'accept' => 'Accept',
+    'declineselect' => 'Decline selected',
+    'acceptselect' => 'Accept selected',
+];

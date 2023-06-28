@@ -1,60 +1,63 @@
-<h1>Comments</h1>
+<!DOCTYPE html>
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{{ __('comments.title') }}</title>
+</head>
+<body>
+    <h1>{{ __('comments.title') }}</h1>
     <form action="{{ route('comments.delete') }}" method="POST" id="deleteForm">
         @csrf
         @method('DELETE')
         <table>
             <script>
+                function confirmDelete() {
+                    var selectedComments = [];
+                    var checkboxes = document.querySelectorAll('input[name="selected_comments[]"]:checked');
 
-function confirmDelete() {
-    var selectedComments = [];
-    var checkboxes = document.querySelectorAll('input[name="selected_comments[]"]:checked');
+                    if (checkboxes.length === 0) {
+                        alert("{{ __('comments.select_one_delete') }}");
+                        return;
+                    }
 
-    if (checkboxes.length === 0) {
-        alert("Please select at least one comment to delete.");
-        return;
-    }
+                    checkboxes.forEach(function (checkbox) {
+                        var commentId = checkbox.value;
+                        selectedComments.push(commentId);
+                    });
 
-    checkboxes.forEach(function (checkbox) {
-        var commentId = checkbox.value;
-        selectedComments.push(commentId);
-    });
-
-    if (confirm("Are you sure you want to delete the following comments:\n" + selectedComments.join(", ") + "?")) {
-        document.getElementById('deleteForm').submit();
-    }
-}
-</script>
-
-     
+                    if (confirm("{{ __('comments.confirm_delete') }}\n" + selectedComments.join(", ") + "?")) {
+                        document.getElementById('deleteForm').submit();
+                    }
+                }
+            </script>
             <thead>
                 <tr>
-                <th>Delete</th>
-                    <th>ID</th>
-                    <th>Author</th>
-                    <th>Doctor id</th>
-                    <th>Doctor</th>
-                    <th>Comment</th>
-                  
+                    <th>{{ __('comments.delete') }}</th>
+                    <th>{{ __('comments.id') }}</th>
+                    <th>{{ __('comments.author') }}</th>
+                    <th>{{ __('comments.doctor_id') }}</th>
+                    <th>{{ __('comments.doctor') }}</th>
+                    <th>{{ __('comments.comment') }}</th>
                 </tr>
             </thead>
             <tbody>
                 @foreach($comments as $comment)
-                <tr>
-                <td>
-                        <input type="checkbox" name="selected_comments[]" value="{{ $comment->id }}">
-                    </td>
-                    <td>{{ $comment->id }}</td>
-                    <td>{{ $comment->user ? $comment->user->name : 'Unknown' }}</td>
-                    <td>{{ $comment->doctor ? $comment->doctor->id : 'Unknown' }}</td>
-                    <td>{{ $comment->doctor ? $comment->doctor->name : 'Unknown' }}</td>
-                    <td>{{ $comment->text }}</td>
-                   
-                </tr>
+                    <tr>
+                        <td>
+                            <input type="checkbox" name="selected_comments[]" value="{{ $comment->id }}">
+                        </td>
+                        <td>{{ $comment->id }}</td>
+                        <td>{{ $comment->user ? $comment->user->name : __('comments.unknown') }}</td>
+                        <td>{{ $comment->doctor ? $comment->doctor->id : __('comments.unknown') }}</td>
+                        <td>{{ $comment->doctor ? $comment->doctor->name : __('comments.unknown') }}</td>
+                        <td>{{ $comment->text }}</td>
+                    </tr>
                 @endforeach
             </tbody>
         </table>
-        <button type="button" onclick="confirmDelete()">Delete selected</button>
+        <button type="button" onclick="confirmDelete()">{{ __('comments.delete_selected') }}</button>
     </form>
-    <a href="{{ url('/dashboard') }}">Go to Homepage aka Dash</a>
+    <a href="{{ url('/dashboard') }}">{{ __('comments.go_to_homepage') }}</a>
 </body>
 </html>

@@ -17,14 +17,14 @@
     @can('is_manager')
    
        
-        <button type="button" onclick="confirmDelete()">Delete Selected</button>
-        <a href="{{ route('doctors.create') }}" class="btn btn-primary">Add Doctor</a>
+        <button type="button" onclick="confirmDelete()">{{__('doctors.delsel') }}</button>
+        <a href="{{ route('doctors.create') }}" class="btn btn-primary">{{__('doctors.add') }}</a>
   
 
 
  
 
-        <button type="button" onclick="editSelected()">Edit Selected</button>
+        <button type="button" onclick="editSelected()">{{__('doctors.editsel') }}</button>
    
 
     </div>
@@ -53,6 +53,13 @@
                     No languages found.
                 @endforelse
             </span>
+            <span>
+        @if ($doctor->photo_id)
+            <img src="{{ asset('images/'.$doctor->photo->name) }}" alt="Doctor Photo" width="100" height="100">
+        @else
+            <img src="{{ asset('images/default.jpg') }}" alt="Default Photo" width="100" height="100">
+        @endif
+    </span>
         </div>
     @elseif (auth()->guest() || (auth()->user()->can('is_admin') || auth()->user()->can('is_user')))
         <div>
@@ -74,6 +81,13 @@
                     No languages found.
                 @endforelse
             </span>
+            <span>
+        @if ($doctor->photo_id)
+            <img src="{{ asset('images/'.$doctor->photo->name) }}" alt="Doctor Photo" width="100" height="100">
+        @else
+            <img src="{{ asset('images/default.jpg') }}" alt="Default Photo" width="100" height="100">
+        @endif
+    </span>
         </div>
     @endif
 @endforeach
@@ -89,9 +103,9 @@ function editSelected() {
     var selectedCount = checkboxes.length;
 
     if (selectedCount === 0) {
-        alert("Please select a specialist to edit.");
+        alert("{{__('doctors.aledit') }}");
     } else if (selectedCount > 1) {
-        alert("Only one specialist can be selected for editing at a time.");
+        alert("{{__('doctors.aleditone') }}");
     } else {
         var selectedDoctorName = checkboxes[0].nextElementSibling.textContent;
         var encodedName = encodeURIComponent(selectedDoctorName).replace(/%20/g, '+');
@@ -104,7 +118,7 @@ function confirmDelete() {
     var checkboxes = document.querySelectorAll('input[name="selected_doctors[]"]:checked');
     
     if (checkboxes.length === 0) {
-        alert("Please select at least one doctor to delete.");
+        alert("{{__('doctors.aldel') }}");
         return;
     }
 
@@ -113,7 +127,7 @@ function confirmDelete() {
         selectedDoctors.push(doctorName);
     });
 
-    if (confirm("Are you sure you want to delete the following doctors:\n" + selectedDoctors.join(", ") + "?")) {
+    if (confirm("{{__('doctors.aldelsure') }}:\n" + selectedDoctors.join(", ") + "?")) {
         document.getElementById('deleteForm').submit();
     }
 }
@@ -138,14 +152,14 @@ function confirmDelete() {
     @csrf
 
     <div>
-        <label for="name">Doctor's Name:</label>
-        <input type="text" id="name" name="name" value="{{ request('name') }}" placeholder="Enter doctor's name">
+        <label for="name">{{__('doctors.name') }}</label>
+        <input type="text" id="name" name="name" value="{{ request('name') }}" placeholder="{{__('doctors.enter') }}">
     </div>
 
     <div>
-        <label for="profession">Profession:</label>
+        <label for="profession">{{__('doctors.profession') }}</label>
         <select id="profession" name="profession">
-            <option value="">All Professions</option>
+            <option value="">{{__('doctors.allprof') }}</option>
             @foreach ($professions as $profession)
                 <option value="{{ $profession->id }}" {{ request('profession') == $profession->id ? 'selected' : '' }}>
                     {{ $profession->name }}
@@ -155,9 +169,9 @@ function confirmDelete() {
     </div>
 
     <div>
-        <label for="subsidiary">Subsidiary:</label>
+        <label for="subsidiary">{{__('doctors.subsidiary') }}</label>
         <select id="subsidiary" name="subsidiary">
-            <option value="">All Subsidiaries</option>
+            <option value="">{{__('doctors.allsub') }}</option>
             @foreach ($subsidiaries as $subsidiary)
     @can('is_manager')
         @if ($subsidiary->manager_id == Auth::user()->id)
@@ -175,27 +189,27 @@ function confirmDelete() {
     </div>
 
     <div>
-        <label for="gender">Gender:</label>
+        <label for="gender">{{__('doctors.gender') }}:</label>
         <select name="gender" id="gender">
-        <option value="">Any</option>
-            <option value="Male">Male</option>
-            <option value="Female">Female</option>
+        <option value="">{{__('doctors.any') }}</option>
+            <option value="Male">{{__('doctors.male') }}</option>
+            <option value="Female">{{__('doctors.female') }}</option>
         </select>
     </div>
 
 
     <div>
-        <label>Languages:</label>
+        <label>{{__('doctors.languages') }}:</label>
         @foreach ($languages as $language)
             <div>
                 <input type="checkbox" id="{{ $language->id }}" name="languages[]" value="{{ $language->id }}" {{ in_array($language->id, request('languages', [])) ? 'checked' : '' }}>
-                <label for="{{ $language->id }}">{{ $language->name }}</label>
+                <label for="{{ $language->id }}">{{ $language->code }}</label>
             </div>
         @endforeach
     </div>
 
 
-    <button type="submit">Search</button>
+    <button type="submit">{{__('doctors.search') }}</button>
 </form>
 
 

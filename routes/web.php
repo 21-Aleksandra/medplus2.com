@@ -18,6 +18,11 @@ use App\Http\Controllers\AppointmentController;
 |
 */
 
+Route::get('lang/{lang}', function ($lang) {
+    session()->put('lang', $lang);
+    return back();
+    
+})->name('lang');
 
 Route::get('/', function () {
     return view('homepage');

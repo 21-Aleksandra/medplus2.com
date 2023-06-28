@@ -4,18 +4,18 @@
     <title>Users</title>
 </head>
 <body>
-    <h1>Delete Users</h1>
+    <h1>{{ __('user.title') }}</h1>
     <form action="{{ route('users.actions') }}" method="POST" id="userActionsForm">
         @csrf
 
         <table>
             <thead>
                 <tr>
-                    <th>ID</th>
-                    <th>Name</th>
-                    <th>Email</th>
-                    <th>Role</th>
-                    <th>Ban</th>
+                    <th>{{ __('user.id') }}</th>
+                    <th>{{ __('user.name') }}</th>
+                    <th>{{ __('user.email') }}</th>
+                    <th>{{ __('user.role') }}</th>
+                    <th>{{ __('user.ban') }}</th>
                 </tr>
             </thead>
             <tbody>
@@ -35,18 +35,18 @@
         </table>
 
         <!-- Action Buttons -->
-        <button type="button" onclick="confirmActions('ban')">Ban Selected Users</button>
-        <button type="button" onclick="confirmActions('delete')">Delete Selected Users</button>
-        <button type="button" onclick="confirmActions('edit')">Edit Selected Users</button>
+        <button type="button" onclick="confirmActions('ban')">{{ __('user.ban') }}</button>
+        <button type="button" onclick="confirmActions('delete')">{{ __('user.delete_users') }}</button>
+        <button type="button" onclick="confirmActions('edit')">{{ __('user.edit_user') }}</button>
     </form>
 
     <script>
-        function confirmActions(action) {
+      function confirmActions(action) {
             var selectedUsers = [];
             var checkboxes = document.querySelectorAll('input[name="users[]"]:checked');
 
             if (checkboxes.length === 0) {
-                alert("Please select at least one user.");
+                alert("{{ __('users.select_at_least_one_user') }}");
                 return;
             }
 
@@ -58,12 +58,12 @@
 
             var confirmationMessage = "Are you sure you want to " + action + " the following users?\n\n";
             selectedUsers.forEach(function (user) {
-                confirmationMessage += "ID: " + user.id + " - Name: " + user.name + "\n";
+                confirmationMessage += "{{ __('user.id') }}: " + user.id + " - {{ __('user.name') }}: " + user.name + "\n";
             });
 
             if (action === 'edit') {
                 if (selectedUsers.length !== 1) {
-                    alert("Please select one user to edit.");
+                    alert("{{ __('users.select_one_user_edit') }}");
                     return;
                 }
                 var selectedUserId = selectedUsers[0].id;
@@ -81,7 +81,8 @@
             }
         }
     </script>
-    <a href="{{ route('users.create') }}" class="btn btn-primary">Add User</a><br>
-    <a href="{{ url('/dashboard') }}">Go to Homepage aka Dash</a>
+    </script>
+    <a href="{{ route('users.create') }}" class="btn btn-primary">{{ __('user.add_user') }}</a><br>
+    <a href="{{ url('/dashboard') }}">{{ __('user.go_to_homepage') }}</a>
 </body>
 </html>

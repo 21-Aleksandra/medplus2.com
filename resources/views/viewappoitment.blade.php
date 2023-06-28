@@ -1,12 +1,12 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Appointments</title>
+    <title>{{ __('appointments.title') }}</title>
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
 </head>
 <body>
     <div class="container">
-        <h1>Appointments</h1>
+        <h1>{{ __('appointments.title') }}</h1>
         @if (session('success'))
             <div class="alert alert-success">
                 {{ session('success') }}
@@ -15,14 +15,14 @@
         <table class="table">
             <thead>
                 <tr>
-                    <th>Date</th>
-                    <th>Time</th>
-                    <th>Doctor</th>
-                    <th>Status</th>
+                    <th>{{ __('appointments.table.date') }}</th>
+                    <th>{{ __('appointments.table.time') }}</th>
+                    <th>{{ __('appointments.table.doctor') }}</th>
+                    <th>{{ __('appointments.table.status') }}</th>
                     @if ($userRole === 0)
-                        <th>Action</th>
+                        <th>{{ __('appointments.table.action') }}</th>
                     @elseif ($userRole === 1)
-                        <th>Select</th>
+                        <th>{{ __('appointments.table.select') }}</th>
                     @endif
                 </tr>
             </thead>
@@ -36,18 +36,18 @@
                             <td>{{ $appointment->doctor->name }}</td>
                             <td>{{ $appointment->status }}</td>
                             <td>
-                                @if ($appointment->status !=='declined')
-                                   <form action="{{ route('appointments.update', $appointment->id) }}" method="POST">
-    @csrf
-    @method('PATCH')
-    <button type="submit" name="action" value="decline" class="btn btn-danger" onclick="return confirm('Are you sure you want to decline your visit to {{ $appointment->doctor->name }}?')">Decline</button>
-</form>
+                                @if ($appointment->status !== 'declined')
+                                    <form action="{{ route('appointments.update', $appointment->id) }}" method="POST">
+                                        @csrf
+                                        @method('PATCH')
+                                        <button type="submit" name="action" value="decline" class="btn btn-danger" onclick="return confirm('{{ __('appointments.decline.confirmation') }} {{ $appointment->doctor->name }}?')">{{ __('appointments.decline') }}</button>
+                                    </form>
                                 @endif
                             </td>
                         </tr>
                     @empty
                         <tr>
-                            <td colspan="5">No appointments found.</td>
+                            <td colspan="5">{{ __('appointments.noappointments') }}</td>
                         </tr>
                     @endforelse
                 @elseif ($userRole === 1)
@@ -67,16 +67,16 @@
                                 </tr>
                             @empty
                                 <tr>
-                                    <td colspan="5">No appointments found.</td>
+                                    <td colspan="5">{{ __('appointments.noappointments') }}</td>
                                 </tr>
                             @endforelse
                         </tbody>
                         <tfoot>
                             <tr>
-                                <td colspan="5">
-                                <button type="submit" name="action" value="decline" class="btn btn-danger" onclick="return confirm('Are you sure you want to decline all selected visit?')">Decline selected</button>
-                                <button type="submit" name="action" value="accept" class="btn btn-danger" onclick="return confirm('Are you sure you want to accept all selected visit ?')">Accept selected</button>
-                                </td>
+                            <td colspan="5">
+    <button type="submit" name="action" value="decline" class="btn btn-danger" onclick="return confirmDeclineAll()">{{ __('appointments.declineselect') }}</button>
+    <button type="submit" name="action" value="accept" class="btn btn-danger" onclick="return confirmAcceptAll()">{{ __('appointments.acceptselect') }}</button>
+</td>
                             </tr>
                         </tfoot>
                     </form>
@@ -85,6 +85,17 @@
         </table>
     </div>
 
+<script>
+    function confirmDeclineAll() {
+        return confirm("{{ __('appointments.declineall.confirmation') }}");
+    }
+
+    function confirmAcceptAll() {
+        return confirm("{{ __('appointments.acceptall.confirmation') }}");
+    }
+
+
+</script>
     <script src="{{ asset('js/app.js') }}"></script>
     <a href="{{ url('/dashboard') }}">Go to Homepage aka Dash</a>
 </body>
