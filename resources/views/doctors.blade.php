@@ -54,11 +54,19 @@
                 @endforelse
             </span>
             <span>
-        @if ($doctor->photo_id)
-            <img src="{{ asset('images/'.$doctor->photo->name) }}" alt="Doctor Photo" width="100" height="100">
-        @else
-            <img src="{{ asset('images/default.jpg') }}" alt="Default Photo" width="100" height="100">
-        @endif
+            @if ($doctor->photo_id)
+    
+    @php
+        $photo = App\Models\Photo::where('id', $doctor->photo_id)->whereNotNull('id')->first();
+    @endphp
+    @if ($photo)
+        <img src="{{ asset('images/' . $photo->name) }}" alt="Doctor Photo" width="100" height="100">
+    @else
+        <img src="{{ asset('images/default.jpg') }}" alt="Default Photo" width="100" height="100">
+    @endif
+@else
+    <img src="{{ asset('images/default.jpg') }}" alt="Default Photo" width="100" height="100">
+@endif
     </span>
         </div>
     @elseif (auth()->guest() || (auth()->user()->can('is_admin') || auth()->user()->can('is_user')))
@@ -82,11 +90,19 @@
                 @endforelse
             </span>
             <span>
-        @if ($doctor->photo_id)
-            <img src="{{ asset('images/'.$doctor->photo->name) }}" alt="Doctor Photo" width="100" height="100">
-        @else
-            <img src="{{ asset('images/default.jpg') }}" alt="Default Photo" width="100" height="100">
-        @endif
+            @if ($doctor->photo_id)
+    
+    @php
+        $photo = App\Models\Photo::where('id', $doctor->photo_id)->whereNotNull('id')->first();
+    @endphp
+    @if ($photo)
+        <img src="{{ asset('images/' . $photo->name) }}" alt="Doctor Photo" width="100" height="100">
+    @else
+        <img src="{{ asset('images/default.jpg') }}" alt="Default Photo" width="100" height="100">
+    @endif
+@else
+    <img src="{{ asset('images/default.jpg') }}" alt="Default Photo" width="100" height="100">
+@endif
     </span>
         </div>
     @endif

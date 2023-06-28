@@ -7,8 +7,11 @@ use App\Models\Profession;
 use App\Models\Language;
 use App\Models\Subsidiary;
 use Illuminate\Validation\Rule;
+use App\Models\Photo;
 use Illuminate\Support\Facades\Gate;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
+use Carbon\Carbon;
 
 class DoctorController extends Controller
 {
@@ -71,9 +74,10 @@ class DoctorController extends Controller
      */
     public function store(Request $request)
     {
-        if(Gate::denies('is_manager')){
+        if (Gate::denies('is_manager')) {
             abort(403);
         }
+    
         $rules = [
             'name' => 'required|string|max:255',
             'gender' => 'required|in:Male,Female',
@@ -81,6 +85,7 @@ class DoctorController extends Controller
             'subsidiary_id' => 'required|exists:subsidiaries,id',
             'phone' => 'required|numeric|digits:8',
             'languages' => 'required|array|exists:languages,id',
+            'image' => 'nullable|image|mimes:jpg,jpeg,png|max:5000', // Updated image validation rules
         ];
     
         $request->validate($rules);
@@ -91,6 +96,25 @@ class DoctorController extends Controller
         $doctor->profession_id = $request->input('profession_id');
         $doctor->subsidiary_id = $request->input('subsidiary_id');
         $doctor->phone = $request->input('phone');
+    
+        if ($request->hasFile('image')) {
+            $image = $request->file('image');
+    
+            // Generate a unique name for the image
+            $currentTimestamp = Carbon::now()->format('Y-m-d_H-i-s');
+            $imageName = $currentTimestamp . '_' . uniqid() . '.' . $image->getClientOriginalExtension();
+    
+            // Store the image in the public/images folder
+            $image->move(public_path('images'), $imageName);
+    
+            // Create a new Photo record
+            $photo = new Photo;
+            $photo->name = $imageName;
+            $photo->save();
+    
+            // Assign the photo ID to the doctor
+            $doctor->photo_id = $photo->id;
+        }
     
         $doctor->save();
     
@@ -144,37 +168,57 @@ class DoctorController extends Controller
     /**
      * Update the specified resource in storage.
      */
-
-     public function update(Request $request, $id)
-     {
-        if(Gate::denies('is_manager')){
+    public function update(Request $request, $id)
+    {
+        if (Gate::denies('is_manager')) {
             abort(403);
         }
-         $rules = [
-             'name' => 'required|string|max:255',
-             'gender' => 'required|in:Male,Female',
-             'profession_id' => 'required|exists:professions,id',
-             'subsidiary_id' => 'required|exists:subsidiaries,id',
-             'phone' => 'required|numeric|digits:8',
-             'languages' => 'required|array|exists:languages,id',
-         ];
-     
-         $request->validate($rules);
-     
-         $doctor = Doctor::findOrFail($id);
-         $doctor->name = $request->input('name');
-         $doctor->gender = $request->input('gender');
-         $doctor->profession_id = $request->input('profession_id');
-         $doctor->subsidiary_id = $request->input('subsidiary_id');
-         $doctor->phone = $request->input('phone');
-     
-         $doctor->languages()->sync($request->input('languages'));
-     
-         $doctor->save();
-     
-         return redirect('/doctors')->with('success', 'Doctor updated successfully');
-     }
-
+    
+        $rules = [
+            'name' => 'required|string|max:255',
+            'gender' => 'required|in:Male,Female',
+            'profession_id' => 'required|exists:professions,id',
+            'subsidiary_id' => 'required|exists:subsidiaries,id',
+            'phone' => 'required|numeric|digits:8',
+            'languages' => 'required|array|exists:languages,id',
+            'image' => 'image|mimes:jpeg,png,jpg|max:5000', 
+        ];
+    
+        $request->validate($rules);
+    
+        $doctor = Doctor::findOrFail($id);
+        $doctor->name = $request->input('name');
+        $doctor->gender = $request->input('gender');
+        $doctor->profession_id = $request->input('profession_id');
+        $doctor->subsidiary_id = $request->input('subsidiary_id');
+        $doctor->phone = $request->input('phone');
+    
+        // Check if a new image is uploaded
+        if ($request->hasFile('image')) {
+            $image = $request->file('image');
+    
+            // Generate a unique name for the image
+            $currentTimestamp = Carbon::now()->format('Y-m-d_H-i-s');
+            $imageName = $currentTimestamp . '_' . uniqid() . '.' . $image->getClientOriginalExtension();
+    
+            // Store the image in the public/images folder
+            $image->move(public_path('images'), $imageName);
+    
+            // Save the image information in the database
+            $photo = new Photo();
+            $photo->name = $imageName;
+            $photo->save();
+    
+            // Update the doctor's photo ID
+            $doctor->photo_id = $photo->id;
+        }
+    
+        $doctor->languages()->sync($request->input('languages'));
+    
+        $doctor->save();
+    
+        return redirect('/doctors')->with('success', 'Doctor updated successfully');
+    }
 
     
     public function delete(Request $request)

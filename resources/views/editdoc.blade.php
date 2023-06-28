@@ -8,7 +8,7 @@
 <body>
     <h1>{{ __('doctors.editdoc') }} : {{ $doctor->name }}</h1>
 
-    <form method="POST" action="{{ route('doctors.update', $doctor->id) }}">
+    <form method="POST" action="{{ route('doctors.update', $doctor->id) }}" enctype="multipart/form-data">
         @csrf
         @method('PUT')
 
@@ -80,6 +80,12 @@
                 </div>
             @endforeach
         </div>
+
+        <div>
+    <label for="image">{{ __('doctors.image') }}:</label>
+    <input type="file" id="image" name="image" accept="image/*" required>
+</div>
+        
 
         <!-- Add other form fields for editing doctor information -->
 

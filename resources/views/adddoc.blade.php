@@ -7,7 +7,7 @@
 <body>
     <h1>{{ __('doctors.adddoc') }}</h1>
 
-    <form method="POST" action="{{ route('doctors.store') }}">
+    <form method="POST" action="{{ route('doctors.store') }}" enctype="multipart/form-data">
         @csrf
 
         @if ($errors->any())
@@ -79,6 +79,11 @@
                 </div>
             @endforeach
         </div>
+
+        <div>
+    <label for="image">{{ __('doctors.image') }}:</label>
+    <input type="file" id="image" name="image" accept="image/*" required>
+</div>
 
         <button type="submit">{{ __('doctors.save') }}</button>
     </form>
