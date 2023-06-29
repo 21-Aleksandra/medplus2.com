@@ -32,7 +32,13 @@ return [
     'aldelsure'=>'Vai tiešām vēlaties dzēst šādus ārstus:' ,
     'editdoc'=>'Rediģet ārstu',
     'adddoc'=>'Pievienot ārstu',
-    'phone'=>'Telefona numurs'
+    'phone'=>'Telefona numurs',
+    'image'=>'Attēls',
+    'serachdiv'=>"Meklēt ārstu",
+    'actions'=>'Darbības',
+    'detail'=>"Ārsta lapa",
+    'hund' => 'Jūs ievadījay vairāk par 400 vārdiem!!!',
+    'nocomments'=>'Nav neviena komentāra'
 
 
     

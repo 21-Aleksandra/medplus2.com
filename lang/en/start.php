@@ -13,6 +13,11 @@ return [
     'logout' => 'Log out',
     'login' => 'Log in',
     'register' => 'Register',
+    'lang' => 'LANG',
+    'oursub'=>'Our subsidiaries',
+    'rezerv'=>'Make reservation',
+    
+    
 
 
     

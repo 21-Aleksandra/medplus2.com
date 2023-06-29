@@ -1,13 +1,17 @@
 <!DOCTYPE html>
 <html>
 <head>
+<meta charset="utf-8">
+<link rel='stylesheet' href="{{asset('/css/main.css')}}" >
     <title>{{ __('user.edit_user') }}</title>
 </head>
 <body>
-    <h1>{{ __('user.edit_user') }}</h1>
-    <div class="container">
-        <div class="card">
-            <div class="card-body">
+<section class="centered-content">   
+@include('layouts.navbar')
+<div class='centerthisa'><h1>{{ __('user.edit_user') }}</h1></div>
+    <div class="containeradd">
+        <div class=" containeradd">
+            <div class="card-body ">
                 <form action="{{ route('users.update', ['user' => $user->id]) }}" method="POST">
                     @csrf
                     @method('PUT')
@@ -54,5 +58,6 @@
             </div>
         </div>
     </div>
+</section>   
 </body>
 </html>

@@ -4,7 +4,8 @@
     <meta charset="UTF-8">
     <title>My Custom Homepage</title>
     <!-- Add any necessary stylesheets or scripts -->
-
+    <section class="centered-content">
+@include('layouts.navbar')
 </head>
 <body>
     <h1>Welcome to My Custom Homepage!</h1>
@@ -25,6 +26,6 @@
 
             <a href="{{ url('/doctors') }}">View Doctors</a>
             
-         
+</section>      
 </body>
 </html>

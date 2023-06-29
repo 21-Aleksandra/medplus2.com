@@ -13,4 +13,5 @@ return [
     'confirm_delete' => 'Are you sure you want to delete the following comments:',
     'go_to_homepage' => 'Go to Homepage',
     'delete_selected' => 'Delete selected',
+    'author_id'=>'Author ID',
 ];

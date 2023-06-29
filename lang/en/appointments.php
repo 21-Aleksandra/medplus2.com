@@ -1,8 +1,8 @@
 <?php
 
 return [
-    'makeappointment' => 'make appointment here',
-    'title' => 'make appointment here!',
+    'makeappointment' => 'Make appointment here',
+    'title' => 'Your reservations!',
     'error' => 'Errors:',
     'date' => 'Date:',
     'time' => 'Time:',
@@ -16,11 +16,12 @@ return [
     'table.action' => 'Action',
     'table.select' => 'Select',
     'noappointments' => 'No appointments found.',
-    'decline.confirmation' => 'Are you sure you want to decline your visit to :doctor?',
+    'decline.confirmation' => 'Are you sure you want to decline your visit to ',
     'decline' => 'Decline',
     'declineall.confirmation' => 'Are you sure you want to decline all selected visits?',
     'acceptall.confirmation' => 'Are you sure you want to accept all selected visits?',
     'accept' => 'Accept',
     'declineselect' => 'Decline selected',
     'acceptselect' => 'Accept selected',
+    'deldata'=>'DELETED',
 ];

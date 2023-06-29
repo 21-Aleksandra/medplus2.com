@@ -64,7 +64,7 @@ class CommentController extends Controller
     
 
         
-        $url = url('/doctor/' . str_replace(' ', '+', $doctor->name));
+        $url = url('/doctor/' . $doctor->id);
 
         return redirect($url);
 

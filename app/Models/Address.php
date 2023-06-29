@@ -11,9 +11,8 @@ class Address extends Model
     use HasFactory;
 
     protected $fillable= ['city', 'street']; 
-
     public function subsidiary()
     {
-        return $this->belongsTo(Subsidiary::class);
+        return $this->hasOne(Subsidiary::class);
     }
 }

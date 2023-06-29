@@ -1,7 +1,7 @@
 <?php
 return [
     'makeappointment' => 'Veiciet rezervāciju šeit',
-    'title' => 'Veiciet rezervāciju šeit!',
+    'title' => 'Jūsu rezervācijas!',
     'error' => 'Kļūdas:',
     'date' => 'Datums:',
     'time' => 'Laiks:',
@@ -14,12 +14,13 @@ return [
     'table.status' => 'Statuss',
     'table.action' => 'Darbība',
     'table.select' => 'Atlasīt',
-    'noappointments' => 'Nav atrasta neviena iecelšana.',
-    'decline.confirmation' => 'Vai tiešām vēlaties noraidīt vizīti pie ārsta :doctor?',
-    'decline' => 'Noraidīt',
+    'noappointments' => 'Nav atrasta neviena rezervācija.',
+    'decline.confirmation' => 'Vai tiešām vēlaties atcelt vizīti pie ārsta ',
+    'decline' => 'Atcelt',
     'declineall.confirmation' => 'Vai tiešām vēlaties atcelt visas atlasītās vizītes?',
     'acceptall.confirmation' => 'Vai tiešām vēlaties pieņemt visas atlasītās vizītes?',
     'accept' => 'Pieņemt',
     'declineselect' => 'Atcelt atlasītās',
     'acceptselect' => 'Pieņemt atlasītās',
+    'deldata'=>'DZĒSTS',
 ];

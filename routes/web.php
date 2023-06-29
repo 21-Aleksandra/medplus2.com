@@ -6,6 +6,9 @@ use App\Http\Controllers\DoctorController;
 use App\Http\Controllers\CommentController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\AppointmentController;
+use App\Models\Subsidiary;
+use App\Models\Address;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -63,7 +66,10 @@ Route::post('/appointments/update-status', [AppointmentController::class, 'updat
 
 
 Route::get('/dashboard', function () {
-    return view('dashboard');
+    $subsidiaries = Subsidiary::all();
+    $addresses = Address::all();
+
+    return view('dashboard', compact('subsidiaries','addresses'));
 })->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::middleware('auth')->group(function () {

@@ -1,6 +1,6 @@
 <?php
 return [
-    'title' => 'Add User',
+    'title' => 'Users',
     'name' => 'Name',
     'email' => 'Email',
     'password' => 'Password',

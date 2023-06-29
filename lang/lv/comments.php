@@ -13,4 +13,5 @@ return [
     'confirm_delete' => 'Vai tiešām vēlaties dzēst šādus komentārus:',
     'go_to_homepage' => 'Iet uz sākumlapu',
     'delete_selected' => 'Dzēst atlasītos',
+    'author_id'=>'Autora ID',
 ];

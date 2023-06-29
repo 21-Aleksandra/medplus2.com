@@ -1,14 +1,18 @@
 <!DOCTYPE html>
 <html>
 <head>
+<meta charset="utf-8">
+<link rel='stylesheet' href="{{asset('/css/main.css')}}" >
     <title>Users</title>
 </head>
 <body>
-    <h1>{{ __('user.title') }}</h1>
-    <form action="{{ route('users.actions') }}" method="POST" id="userActionsForm">
+<section class="centered-content">
+@include('layouts.navbar')
+    <h1 class="heading">{{ __('user.title') }}</h1>
+    <form action="{{ route('users.actions') }}" method="POST" id="userActionsForm" class="table-form">
         @csrf
-
-        <table>
+        <div class="content-wrapper">
+        <table class="table table-bordered  table-custom">
             <thead>
                 <tr>
                     <th>{{ __('user.id') }}</th>
@@ -26,27 +30,32 @@
                     <td>{{ $user->email }}</td>
                     <td>{{ $user->role }}</td>
                     <td>
-                        <!-- Ban Checkbox -->
-                        <input type="checkbox" name="users[]" value="{{ $user->id }}" data-username="{{ $user->name }}">
+                      
+                        <input class='bestcheck' type="checkbox" name="users[]" value="{{ $user->id }}" data-username="{{ $user->name }}">
                     </td>
                 </tr>
                 @endforeach
             </tbody>
         </table>
 
-        <!-- Action Buttons -->
-        <button type="button" onclick="confirmActions('ban')">{{ __('user.ban') }}</button>
-        <button type="button" onclick="confirmActions('delete')">{{ __('user.delete_users') }}</button>
-        <button type="button" onclick="confirmActions('edit')">{{ __('user.edit_user') }}</button>
+        <div class='action-box '>
+        <div class="action-buttons">
+        <h1>{{__('doctors.actions') }}</h1>
+        <button class="btn btn-danger rounded"><a id="nostileno" href="{{ route('users.create') }}" >{{ __('user.add_user') }}</a></button>
+        <button type="button" onclick="confirmActions('ban')" class="btn btn-danger rounded">{{ __('user.ban') }}</button>
+        <button type="button" onclick="confirmActions('delete')" class="btn btn-danger rounded">{{ __('user.delete_users') }}</button>
+        <button type="button" onclick="confirmActions('edit')" class="btn btn-danger rounded">{{ __('user.edit_user') }}</button>
+        </div>
+        </div>
     </form>
 
     <script>
-      function confirmActions(action) {
+        function confirmActions(action) {
             var selectedUsers = [];
             var checkboxes = document.querySelectorAll('input[name="users[]"]:checked');
 
             if (checkboxes.length === 0) {
-                alert("{{ __('users.select_at_least_one_user') }}");
+                alert("{{ __('user.select_at_least_one_user') }}");
                 return;
             }
 
@@ -63,7 +72,7 @@
 
             if (action === 'edit') {
                 if (selectedUsers.length !== 1) {
-                    alert("{{ __('users.select_one_user_edit') }}");
+                    alert("{{ __('user.select_one_user_edit') }}");
                     return;
                 }
                 var selectedUserId = selectedUsers[0].id;
@@ -82,7 +91,7 @@
         }
     </script>
     </script>
-    <a href="{{ route('users.create') }}" class="btn btn-primary">{{ __('user.add_user') }}</a><br>
-    <a href="{{ url('/dashboard') }}">{{ __('user.go_to_homepage') }}</a>
+    </div>
+</section>
 </body>
 </html>

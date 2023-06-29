@@ -8,6 +8,7 @@ use Carbon\Carbon;
 use Illuminate\Database\Seeder;
 use App\Models\Subsidiary;
 use App\Models\User;
+use Illuminate\Support\Str;
 use App\Models\Doctor;
 use App\Models\Profession;
 use App\Models\Comment;

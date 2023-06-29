@@ -2,33 +2,63 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <link rel='stylesheet' href="{{asset('/css/main.css')}}" >
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Doctor Details</title>
 </head>
 <body>
-    <h1>Doctor Details</h1>
-    
-    <div>
+<section class="centered-content">    
+@canany(['is_user', 'is_manager', 'is_admin'])
+@include('layouts.navbar')
+@endcanany
+
+@guest
+@include('layouts.navbarguest')
+@endguest
+<div class="showdoc">
  
+
+    <h1>{{__('doctors.detail') }}</h1>
+    
+
 
 
         @if ($doctor)
             <h2>{{ $doctor->name }}</h2>
-            <p>Gender: {{ $doctor->gender }}</p>
-            <p>Profession: {{ $doctor->profession->name }}</p>
-            <!-- Display other relevant doctor information -->
+            <span>
+                            @if ($doctor->photo_id)
+                                @php
+                                    $photo = App\Models\Photo::where('id', $doctor->photo_id)->whereNotNull('id')->first();
+                                @endphp
+                                @if ($photo)
+                                    <a href="{{ route('doctor.show', $doctor->id) }}"><img src="{{ asset('images/' . $photo->name) }}" alt="Doctor Photo" ></a>
+                                @else
+                                    <a href="{{ route('doctor.show', $doctor->id) }}"><img src="{{ asset('images/default.jpg') }}" alt="Default Photo" ></a>
+                                @endif
+                            @else
+                                <a href="{{ route('doctor.show', $doctor->id) }}"><img src="{{ asset('images/default.jpg') }}" alt="Default Photo"></a>
+                            @endif
+                        </span>
+            <div class='infodoc aka'>
+            <p> {{ $doctor->subsidiary->naming }}</p>
+            <p> {{ $doctor->profession->name }}</p>
+         
 
-            <h3>Languages:</h3>
-            <ul>
-                @forelse ($doctor->languages as $language)
-                    <li>{{ $language->code }}</li>
-                @empty
-                    <li>No languages found.</li>
-                @endforelse
-            </ul>
+            <div class='p'>
+            @forelse ($doctor->languages as $key => $language)
+                                {{ $language->code }}
+                                @if (!$loop->last)
+                                    ,
+                                @endif
+                            @empty
+                                No languages found.
+                            @endforelse
+                </div>   
+</div>
+     
 
             @can('is_user')
-            <h3>Leave a Comment</h3>
+            <h3 class="leavecomhere">{{__('doctors.leave') }}</h3>
             @if ($errors->any())
                 <div class="alert alert-danger">
                     <ul>
@@ -39,27 +69,31 @@
                 </div>
             @endif
 
-           
+          
             <form method="POST" action="{{ route('comments.store', ['doctorname' => $doctor->name]) }}">
                 @csrf
-                <textarea name="text" id="commentText" rows="4" cols="50" placeholder="Enter your comment(max = 400 symbols)"></textarea>
+                <textarea name="text" id="commentText" rows="4" cols="50" placeholder="Enter your comment(max = 400 symbols)"class="custom-textarea" ></textarea>
                 <br>
                 <button type="submit" onclick="return confirm('Are you sure you want to save this comment?')">Save</button>
             </form>
             @endcan
 
             <div id="characterCountMessage" style="display: none;">
-                <p> You have entered more than 400!!!</p>
+                <p> {{__('doctors.hund') }}</p>
             </div>
 
-            <h3>Comments</h3>
-            @foreach ($comments as $comment)
-                <p>Author: {{ $comment->user->name }}</p>
-                <p>{{ $comment->text }}</p>
-                <hr>
-            @endforeach
-
-           
+            <div class="com top">
+    <h3>{{__('doctors.comments') }}</h3>
+    @if ($comments->isEmpty())
+        <p>{{__('doctors.nocomments') }}</p>
+    @else
+        @foreach ($comments as $comment)
+            <p>{{__('doctors.author') }}: {{ $comment->user->name }}</p>
+            <p>{{ $comment->text }}</p>
+            <hr>
+        @endforeach
+    @endif
+</div>
 
             <script>
                 var inputElement = document.getElementById('commentText');
@@ -82,6 +116,9 @@
         @endif
     </div>
 
-    <a href="{{ url('/doctors') }}">Go to doctor list</a>
+
+
+</section>
 </body>
+
 </html>

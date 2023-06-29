@@ -32,7 +32,13 @@ return [
     'aldelsure'=>'Are you sure you want to delete the following doctors:' ,
     'editdoc'=>'Edit doctor',
     'adddoc'=>'Add doctor',
-    'phone'=>'Phone'
+    'phone'=>'Phone',
+    'image'=>'Image',
+    'serachdiv'=>"Search  doctor",
+    'actions'=>'Actions',
+    'detail'=>"Doctor page",
+    'hund' => 'You have entered more than 400!!!',
+    'nocomments'=>'No comments found.'
 
 
 

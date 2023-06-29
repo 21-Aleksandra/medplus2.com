@@ -1,6 +1,6 @@
 <?php
 return [
-    'title' => 'Pievienot lietotāju',
+    'title' => 'Lietotāji',
     'name' => 'Vārds',
     'email' => 'E-pasts',
     'password' => 'Parole',

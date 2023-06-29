@@ -2,12 +2,16 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <link rel='stylesheet' href="{{asset('/css/main.css')}}" >
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{ __('user.title') }}</title>
+    <title>{{ __('user.add_user') }}</title>
 </head>
 <body>
-    <h1>{{ __('user.title') }}</h1>
-    <div class="container">
+<section class="centered-content">    
+@include('layouts.navbar')
+<div class='centerthisa'><h1>{{ __('user.add_user') }}</h1></div>
+    
+    <div class="containeradd">
         <div class="card">
             <div class="card-body">
             @if ($errors->any())
@@ -54,6 +58,7 @@
             </div>
         </div>
     </div>
-    <a href="{{ route('users.index') }}" class="btn btn-secondary">{{ __('user.back_to_users') }}</a>
+  
+</section>
 </body>
 </html>

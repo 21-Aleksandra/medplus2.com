@@ -13,6 +13,9 @@ return [
     'logout' => 'Iziet',
     'login' => 'Ieiet',
     'register' => 'Piereģistrēties',
+    'lang' => 'VALO',
+    'oursub'=>'Mūsu nodaļas',
+    'rezerv'=>'Pierakstīties',
 
 
 

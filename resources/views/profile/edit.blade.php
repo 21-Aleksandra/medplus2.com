@@ -1,14 +1,18 @@
-<x-app-layout>
-    <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            {{ __('Profile') }}
-        </h2>
-    </x-slot>
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <link rel='stylesheet' href="{{asset('/css/main.css')}}" >
+    <title>{{ __('proftrans.profile_information') }}</title>
+</head>
+<body>
+<section class="centered-content">   
+@include('layouts.navbar')
 
-    <div class="py-12">
+    <div class="profilepic">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 space-y-6">
             <div class="p-4 sm:p-8 bg-white shadow sm:rounded-lg">
-                <div class="max-w-xl">
+                <div class="form-group" class="max-w-xl">
                     @include('profile.partials.update-profile-information-form')
                 </div>
             </div>
@@ -25,10 +29,12 @@
                 </div>
             </div>
             <div class="text-center">
-    @can('is_user')
-    <a href="{{ route('appointments.create') }}" class="btn btn-primary">Create Appointment</a>
-    @endcan
-</div>
+                @can('is_user')
+                
+                @endcan
+            </div>
         </div>
     </div>
-</x-app-layout>
+</section>
+</body>
+</html>
