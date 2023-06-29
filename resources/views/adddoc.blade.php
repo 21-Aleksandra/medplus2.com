@@ -1,10 +1,14 @@
 <!DOCTYPE html>
-<html lang="{{ app()->getLocale() }}">
+<html>
 <head>
     <meta charset="UTF-8">
+    <link rel='stylesheet' href="{{asset('/css/main.css')}}" >
     <title>{{ __('doctors.adddoc') }}</title>
 </head>
 <body>
+<section class="centered-content">   
+@include('layouts.navbar')
+<div class="editform">
     <h1>{{ __('doctors.adddoc') }}</h1>
 
     <form method="POST" action="{{ route('doctors.store') }}" enctype="multipart/form-data">
@@ -20,14 +24,13 @@
             </div>
         @endif
 
-        <!-- Name field -->
-        <div>
+
+        <div class="form-group" >
             <label for="name">{{ __('doctors.name') }}:</label>
             <input type="text" id="name" name="name" value="{{ old('name') }}" placeholder="{{ __('doctors.enter') }}">
         </div>
 
-        <!-- Gender field -->
-        <div>
+        <div class="form-group" >
             <label for="gender">{{ __('doctors.gender') }}:</label>
             <select id="gender" name="gender">
                 <option value="Male" {{ old('gender') === 'Male' ? 'selected' : '' }}>{{ __('doctors.male') }}</option>
@@ -35,8 +38,8 @@
             </select>
         </div>
 
-        <!-- Profession field -->
-        <div>
+    
+        <div class="form-group" >
             <label for="profession_id">{{ __('doctors.profession') }}:</label>
             <select id="profession_id" name="profession_id">
                 <option value="">{{ __('doctors.allprof') }}</option>
@@ -48,8 +51,8 @@
             </select>
         </div>
 
-        <!-- Subsidiary field -->
-        <div>
+ 
+        <div class="form-group">
             <label for="subsidiary_id">{{ __('doctors.subsidiary') }}:</label>
             <select id="subsidiary_id" name="subsidiary_id">
                 <option value="">{{ __('doctors.allsub') }}</option>
@@ -63,14 +66,14 @@
             </select>
         </div>
 
-        <!-- Phone number field -->
-        <div>
+
+        <div class="form-group">
             <label for="phone">{{ __('doctors.phone') }}:</label>
             <input type="text" id="phone" name="phone" value="{{ old('phone') }}" placeholder="{{ __('doctors.enter2') }}">
         </div>
 
-        <!-- Languages field -->
-        <div>
+ 
+        <div class="form-group">
             <label>{{ __('doctors.languages') }}:</label>
             @foreach ($languages as $language)
                 <div>
@@ -82,12 +85,18 @@
 
         <div>
     <label for="image">{{ __('doctors.image') }}:</label>
-    <input type="file" id="image" name="image" accept="image/*" required>
+    <input type="file" id="image" name="image" accept="image/*" >
 </div>
 
-        <button type="submit">{{ __('doctors.save') }}</button>
+<div class='cooler'>
+<button  type="submit">{{ __('doctors.save') }}</button>
+
+</div>
+       
     </form>
 
-    <a href="{{ url('/doctors') }}">Go to doctor list</a>
+
+</section>
+</div>
 </body>
 </html>

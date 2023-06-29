@@ -2,10 +2,15 @@
 <html lang="{{ app()->getLocale() }}">
 <head>
     <meta charset="UTF-8">
+    <link rel='stylesheet' href="{{asset('/css/main.css')}}" >
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{{ __('doctors.editdoc') }} : {{ $doctor->name }}</title>
 </head>
 <body>
+<section class="centered-content">
+@include('layouts.navbar')  
+<div class="editform">
+ 
     <h1>{{ __('doctors.editdoc') }} : {{ $doctor->name }}</h1>
 
     <form method="POST" action="{{ route('doctors.update', $doctor->id) }}" enctype="multipart/form-data">
@@ -22,14 +27,14 @@
             </div>
         @endif
 
-        <!-- Edit name field -->
-        <div>
+    
+        <div class="form-group">
             <label for="name">{{ __('doctors.name') }}:</label>
             <input type="text" id="name" name="name" value="{{ old('name', $doctor->name) }}" placeholder="{{ __('doctors.enter') }}">
         </div>
 
-        <!-- Edit gender field -->
-        <div>
+      
+        <div class="form-group">
             <label for="gender">{{ __('doctors.gender') }}:</label>
             <select id="gender" name="gender">
                 <option value="Male" {{ old('gender', $doctor->gender) === 'Male' ? 'selected' : '' }}>{{ __('doctors.male') }}</option>
@@ -37,8 +42,8 @@
             </select>
         </div>
 
-        <!-- Edit profession field -->
-        <div>
+      
+        <div class="form-group">
             <label for="profession_id">{{ __('doctors.profession') }}:</label>
             <select id="profession_id" name="profession_id">
                 <option value="">{{ __('doctors.allprof') }}</option>
@@ -50,8 +55,7 @@
             </select>
         </div>
 
-        <!-- Edit subsidiary field -->
-        <div>
+        <div class="form-group">
             <label for="subsidiary">{{ __('doctors.subsidiary') }}:</label>
             <select id="subsidiary" name="subsidiary_id">
                 <option value="">{{ __('doctors.allsub') }}</option>
@@ -64,14 +68,13 @@
         </div>
 
 
-        <!-- Edit phone number field -->
-        <div>
+        <div class="form-group">
             <label for="phone">{{ __('doctors.phone') }}:</label>
             <input type="text" id="phone" name="phone" value="{{ old('phone', $doctor->phone) }}" placeholder="{{ __('doctors.enter') }}" required>
         </div>
 
-        <!-- Edit languages field -->
-        <div>
+      
+        <div class="form-group">
             <label>{{ __('doctors.languages') }}:</label>
             @foreach ($languages as $language)
                 <div>
@@ -81,19 +84,21 @@
             @endforeach
         </div>
 
-        <div>
+        <div >
     <label for="image">{{ __('doctors.image') }}:</label>
-    <input type="file" id="image" name="image" accept="image/*" required>
+    <input type="file" id="image" name="image" accept="image/*" >
 </div>
         
 
-        <!-- Add other form fields for editing doctor information -->
+<div class='cooler'>
+<button  type="submit">{{ __('doctors.save') }}</button>
 
-        <button type="submit">{{ __('doctors.save') }}</button>
+</div>
+       
     </form>
 
-<a href="{{ url('/doctors') }}">Go back to doctors</a>
 
-
+</div> 
+</section>
 </body>
 </html>

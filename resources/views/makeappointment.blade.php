@@ -2,9 +2,12 @@
 <html>
 
 <head>
+<meta charset="utf-8">
+<link rel='stylesheet' href="{{asset('/css/main.css')}}" >
     <title>{{ __('appointments.title') }}</title>
 </head>
-
+<section class="centered-content containeradd">
+@include('layouts.navbar')
 <body>
     <h1>{{ __('appointments.makeappointment') }}</h1>
 
@@ -42,10 +45,11 @@
             </select>
         </div>
 
-        <!-- Add any additional appointment fields as needed -->
+       
 
         <button type="submit">{{ __('appointments.create') }}</button>
     </form>
+</section>
 </body>
 
 </html>
